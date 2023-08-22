@@ -49,7 +49,7 @@ divideBtn.onclick = function () {
 //    };
 // });
 
-
+// функция
 function computeNumbers(num1, num2, action) {
     // Решил сделать двумя способами
     const mathItUp = {
@@ -84,6 +84,10 @@ submitBtn.onclick = function () {
 }
 
 // Сделал чуть больше, чем требовалось! В вёрстке еще и умножения с делением не было)
+// Некоторое изменение
+// Еще одно изменение
+// Проверка на пуш
+// Пулл реквестим
 function controlDecimalPlaces(e) {
     const input = e.target
     if (input.value.indexOf(".") !== Number('-1')) {
