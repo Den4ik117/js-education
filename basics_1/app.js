@@ -87,6 +87,7 @@ submitBtn.onclick = function () {
 // Некоторое изменение
 // Еще одно изменение
 // Проверка на пуш
+// Пулл реквестим
 function controlDecimalPlaces(e) {
     const input = e.target
     if (input.value.indexOf(".") !== Number('-1')) {
