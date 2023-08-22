@@ -85,6 +85,7 @@ submitBtn.onclick = function () {
 
 // Сделал чуть больше, чем требовалось! В вёрстке еще и умножения с делением не было)
 // Некоторое изменение
+// Еще одно изменение
 function controlDecimalPlaces(e) {
     const input = e.target
     if (input.value.indexOf(".") !== Number('-1')) {
