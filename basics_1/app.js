@@ -49,7 +49,7 @@ divideBtn.onclick = function () {
 //    };
 // });
 
-
+// функция
 function computeNumbers(num1, num2, action) {
     // Решил сделать двумя способами
     const mathItUp = {
