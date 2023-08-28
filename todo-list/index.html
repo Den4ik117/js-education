@@ -13,23 +13,27 @@
 <body>
 <main>
   <div class="container w-50 pt-5">
-    <div class="d-flex mb-3">
+    <div class="d-flex input-group mb-3">
       <input
           type="search"
           class="form-control"
           id="input"
-          placeholder="Введите задачу">
-      <button
-          class="btn btn-primary"
-          id="button"
-      >Добавить
-      </button>
+          placeholder="Введите задачу"
+          aria-label="input">
+      <div class="input-group-append">
+        <button
+            class="btn btn-primary"
+            id="button"
+        >Добавить
+        </button>
+      </div>
     </div>
     <div>
       <ul class="list-group" id="tasks">
       </ul>
     </div>
   </div>
+
 </main>
 </body>
 </html>
