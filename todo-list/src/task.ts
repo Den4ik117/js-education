@@ -2,44 +2,36 @@ export interface Task {
     title: string;
 }
 
-function createTaskTitleHTML(title: string) {
-    const titleHTML = document.createElement('span') as HTMLSpanElement;
+function createTaskTitleHTMLElem(title: string) {
+    const titleHTML: HTMLSpanElement = document.createElement('span');
     titleHTML.textContent = title;
     return titleHTML;
 }
 
-function createTaskButtonHTML(): HTMLButtonElement {
-    const btnEl = document.createElement('button') as HTMLButtonElement;
+function createTaskButtonHTMLElem(): HTMLButtonElement {
+    const btnEl: HTMLButtonElement = document.createElement('button');
     const btnClassNames = ['btn', 'btn-danger'];
-    const btnClass = btnClassNames.join(' ');
-    btnEl.className = btnClass;
+    btnEl.className = btnClassNames.join(' ');
     btnEl.textContent = 'X';
 
-    btnEl.addEventListener('click', (event) => {
-        const clickedTarget = event.currentTarget;
-        if (!(clickedTarget instanceof Element))
-            return;
-        clickedTarget.closest('li')?.remove();
-    });
 
     return btnEl;
 }
 
-function createTaskLIHTML(title: HTMLSpanElement, btn: HTMLButtonElement): HTMLLIElement {
-    const liHTML = document.createElement('li') as HTMLLIElement;
+function createTaskLIHTMLElem(title: HTMLSpanElement, btn: HTMLButtonElement): HTMLLIElement {
+    const liHTML: HTMLLIElement = document.createElement('li');
     const liClassNames = ['list-group-item', 'd-flex', 'align-items-center', 'justify-content-between', 'mb-2',
-    'border', 'rounded'];
-    const itemClass = liClassNames.join(' ');
-    liHTML.className = itemClass;
+        'border', 'rounded'];
+    liHTML.className = liClassNames.join(' ');
     liHTML.appendChild(title);
     liHTML.appendChild(btn);
 
     return liHTML;
 }
 
-export function getTaskHTML(task: Task): HTMLLIElement {
-    const titleHTML = createTaskTitleHTML(task.title);
-    const btnHTML = createTaskButtonHTML();
+export function getTaskHTMLElem(task: Task): HTMLLIElement {
+    const titleHTML = createTaskTitleHTMLElem(task.title);
+    const btnHTML = createTaskButtonHTMLElem();
 
-    return createTaskLIHTML(titleHTML, btnHTML);
+    return createTaskLIHTMLElem(titleHTML, btnHTML);
 }
