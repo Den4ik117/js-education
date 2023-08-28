@@ -18,23 +18,32 @@ class TODOList implements List<Task> {
     tasksElem: HTMLUListElement;
 
     constructor(items?: Task[]) {
-        this.items = items ? items : [];
+        this.items = items ?? [];
         this.tasksElem = tasksElem;
     }
+
 
     push(task: Task): void {
         this.items.push(task);
         const taskHTMLEl = getTaskHTML(task);
-        tasksElem.appendChild(taskHTMLEl);
-        // tasksElem.insertAdjacentHTML('beforeend', getTaskHTMLElement(task));
+        this.tasksElem.appendChild(taskHTMLEl);
+        localStorage.setItem('tasks', JSON.stringify(this.items));
     }
 
     pop(): Task | undefined {
         return this.items.pop();
     }
+
+    receiveStorageTasks(): void {
+        const rawStorageTasks = localStorage.getItem('tasks');
+        const storageTasks = rawStorageTasks ? JSON.parse(rawStorageTasks) as Task[] : [];
+        storageTasks.slice().reverse().forEach((task) => {
+           this.push(task);
+        });
+    }
 }
 
-const tasks = new TODOList();
+const toDoList = new TODOList();
 
 buttonElem.addEventListener('click', () => {
     const title = inputElem.value;
@@ -43,6 +52,9 @@ buttonElem.addEventListener('click', () => {
     const newTask: Task = {
         title: title
     }
-    tasks.push(newTask);
+    toDoList.push(newTask);
 })
 
+window.addEventListener('load', () => {
+   toDoList.receiveStorageTasks();
+});

@@ -27,7 +27,8 @@ function createTaskButtonHTML(): HTMLButtonElement {
 
 function createTaskLIHTML(title: HTMLSpanElement, btn: HTMLButtonElement): HTMLLIElement {
     const liHTML = document.createElement('li') as HTMLLIElement;
-    const liClassNames = ['list-group-item', 'd-flex', 'align-items-center', 'justify-content-between'];
+    const liClassNames = ['list-group-item', 'd-flex', 'align-items-center', 'justify-content-between', 'mb-2',
+    'border', 'rounded'];
     const itemClass = liClassNames.join(' ');
     liHTML.className = itemClass;
     liHTML.appendChild(title);
@@ -41,9 +42,4 @@ export function getTaskHTML(task: Task): HTMLLIElement {
     const btnHTML = createTaskButtonHTML();
 
     return createTaskLIHTML(titleHTML, btnHTML);
-    // return `
-    //     <li class='${itemClass}'>
-    //       <span>${task.title}</span>
-    //       <button class='${btnClass}'>X</button>
-    //     </li>`
 }
