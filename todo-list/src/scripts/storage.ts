@@ -2,34 +2,29 @@ import {Task} from './task.ts';
 
 export class TaskLocalStorage {
     key: string;
-    tasks: Task[];
+    tasks: Set<Task>;
 
-    constructor(keyToAccess?: string, items?: Task[]) {
+    constructor(keyToAccess?: string, items?: Set<Task>) {
         this.key = keyToAccess ?? 'tasks';
         this.tasks = items ?? this.parseLocalStorage();
     }
 
-    private parseLocalStorage(): Task[] {
+    private parseLocalStorage(): Set<Task> {
         const existingTasks = localStorage.getItem(this.key);
         if (!existingTasks)
-            return [];
+            return new Set<Task>();
         return JSON.parse(existingTasks);
     }
 
     push(task: Task): void {
-        this.tasks.push(task);
+        this.tasks.add(task);
         localStorage.setItem(this.key, JSON.stringify(this.tasks));
     }
 
-    pop(title: string): void {
-        // const indexOfTaskToDelete = this.tasks.findIndex((task) => {
-        //     return task.title === title
-        // });
-        // const taskToDelete = this.tasks[indexOfTaskToDelete];
-        //
-        // this.tasks.splice(indexOfTaskToDelete, 1);
-        this.tasks = this.tasks.filter((task) => {
-            return task.title !== title;
+    deleteTaskByTitle(title: string): void {
+        this.tasks.forEach((task) => {
+            if (task.title === title)
+                this.tasks.delete(task);
         });
         localStorage.setItem(this.key, JSON.stringify(this.tasks));
     }

@@ -7,7 +7,7 @@ export class TODOListView {
 
     constructor(ULListElem: HTMLUListElement | null,
                 popupWindow: HTMLDivElement | null,
-                tasks?: Task[],
+                tasks?: Set<Task>,
                 dataAttributeName: string = 'title') {
         this.root = ULListElem;
         this.modalWindow = popupWindow;
@@ -15,17 +15,17 @@ export class TODOListView {
         this.init(tasks);
     }
 
-    private init(tasks?: Task[]): void {
+    private init(tasks?: Set<Task>): void {
         this.showTasks(tasks);
         this.registerModalClosing();
     }
 
-    private showTasks(tasks?: Task[]): void {
-        if (tasks) {
-            tasks.forEach((task) => {
-                this.push(task);
-            })
-        }
+    private showTasks(tasks?: Set<Task>): void {
+        if (!tasks)
+            return;
+        tasks.forEach((task) => {
+            this.push(task);
+        })
     }
 
     private registerModalClosing(): void {

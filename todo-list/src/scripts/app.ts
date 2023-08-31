@@ -9,12 +9,12 @@ const buttonElem: HTMLButtonElement | null = document.querySelector('#button');
 
 
 class TODOList {
-    tasks: Task[];
+    tasks: Set<Task>;
 
     constructor(public itemsView: TODOListView,
                 public localStorage: TaskLocalStorage,
-                items?: Task[]) {
-        this.tasks = items ?? [];
+                items?: Set<Task>) {
+        this.tasks = items ?? new Set<Task>();
         this._init();
     }
 
@@ -24,16 +24,17 @@ class TODOList {
     }
 
     push(task: Task): void {
-        this.tasks.push(task);
+        this.tasks.add(task);
         this.itemsView.push(task);
         this.localStorage.push(task);
     }
 
-    remove(title: string): Task | undefined {
+    remove(title: string): void {
         this.itemsView.remove(title);
-        this.localStorage.pop(title);
-        return this.tasks.find((task) => {
-            return task.title === title
+        this.localStorage.deleteTaskByTitle(title);
+        this.tasks.forEach((task) => {
+            if (task.title === title)
+                this.tasks.delete(task);
         });
     }
 
@@ -42,9 +43,17 @@ class TODOList {
             const title = inputElem?.value;
             if (!title)
                 return;
-            const newTask: Task = {
-                title: title
-            };
+            let isTaskExists = false;
+            this.tasks.forEach((task) => {
+                if (task.title === title) {
+                    alert('Такая задача уже присутствует в списке дел');
+                    isTaskExists = true;
+                    return
+                }
+            });
+            if (isTaskExists)
+                return;
+            const newTask: Task = {title: title};
             this.push(newTask);
         })
     }
