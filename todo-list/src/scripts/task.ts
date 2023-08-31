@@ -8,12 +8,12 @@ function createTaskTitleHTMLElem(title: string) {
     return titleHTML;
 }
 
-function createTaskButtonHTMLElem(): HTMLButtonElement {
+function createTaskButtonHTMLElem(taskTitle: string): HTMLButtonElement {
     const btnEl: HTMLButtonElement = document.createElement('button');
     const btnClassNames = ['btn', 'btn-danger'];
     btnEl.className = btnClassNames.join(' ');
     btnEl.textContent = 'X';
-
+    btnEl.setAttribute('data-task-title', taskTitle);
 
     return btnEl;
 }
@@ -31,7 +31,7 @@ function createTaskLIHTMLElem(title: HTMLSpanElement, btn: HTMLButtonElement): H
 
 export function getTaskHTMLElem(task: Task): HTMLLIElement {
     const titleHTML = createTaskTitleHTMLElem(task.title);
-    const btnHTML = createTaskButtonHTMLElem();
+    const btnHTML = createTaskButtonHTMLElem(task.title);
 
     return createTaskLIHTMLElem(titleHTML, btnHTML);
 }

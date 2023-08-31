@@ -1,21 +1,12 @@
-import {Task} from './task';
-import {TODOListView} from './view';
-import {TaskLocalStorage} from './storage';
+import {Task} from './task.ts';
+import {TODOListView} from './view.ts';
+import {TaskLocalStorage} from './storage.ts';
 
 const inputElem: HTMLInputElement | null = document.querySelector('#input');
-const buttonElem: HTMLButtonElement | null = document.querySelector('#button');
-buttonElem?.addEventListener('click', () => {
-    const title = inputElem?.value;
-    if (!title)
-        return;
-    const newTask: Task = {
-        title: title
-    };
-    toDoList.push(newTask);
-})
-
-
 const tasksElem: HTMLUListElement | null = document.querySelector('#tasks');
+const modalWindowElem: HTMLDivElement | null = document.querySelector('#modal');
+const buttonElem: HTMLButtonElement | null = document.querySelector('#button');
+
 
 class TODOList {
     tasks: Task[];
@@ -28,7 +19,8 @@ class TODOList {
     }
 
     private _init(): void {
-        this._addTaskDeleteListener();
+        this.addTaskAddingListener();
+        this.addTaskDeleteListener();
     }
 
     push(task: Task): void {
@@ -45,20 +37,31 @@ class TODOList {
         });
     }
 
-    private _addTaskDeleteListener(): void {
+    private addTaskAddingListener() {
+        buttonElem?.addEventListener('click', () => {
+            const title = inputElem?.value;
+            if (!title)
+                return;
+            const newTask: Task = {
+                title: title
+            };
+            this.push(newTask);
+        })
+    }
+
+    private addTaskDeleteListener(): void {
         this.itemsView.root?.addEventListener('click', (event) => {
             const clickedTarget = event.target;
             if (!(clickedTarget instanceof HTMLButtonElement))
                 return
-            //TODO: Не лучший способ искать рядом лежащий span, но лучше не знаю
-            const taskTitle = clickedTarget.previousElementSibling?.textContent;
-            if (taskTitle) {
-                this.remove(taskTitle);
-            }
+            const taskTitle = clickedTarget.getAttribute('data-task-title');
+            if (!taskTitle)
+                return;
+            this.remove(taskTitle);
         });
     }
 }
 
 const taskLocalStorage = new TaskLocalStorage('tasks');
-const toDoListView = new TODOListView(tasksElem, taskLocalStorage.tasks);
-const toDoList = new TODOList(toDoListView, taskLocalStorage);
+const toDoListView = new TODOListView(tasksElem, modalWindowElem, taskLocalStorage.tasks);
+new TODOList(toDoListView, taskLocalStorage);

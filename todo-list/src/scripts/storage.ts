@@ -1,4 +1,4 @@
-import {Task} from './task';
+import {Task} from './task.ts';
 
 export class TaskLocalStorage {
     key: string;
@@ -6,10 +6,10 @@ export class TaskLocalStorage {
 
     constructor(keyToAccess?: string, items?: Task[]) {
         this.key = keyToAccess ?? 'tasks';
-        this.tasks = items ?? this._parseLocalStorage();
+        this.tasks = items ?? this.parseLocalStorage();
     }
 
-    _parseLocalStorage(): Task[] {
+    private parseLocalStorage(): Task[] {
         const existingTasks = localStorage.getItem(this.key);
         if (!existingTasks)
             return [];
@@ -21,15 +21,16 @@ export class TaskLocalStorage {
         localStorage.setItem(this.key, JSON.stringify(this.tasks));
     }
 
-    pop(title: string): Task {
-        const indexOfTaskToDelete = this.tasks.findIndex((task) => {
-            return task.title === title
+    pop(title: string): void {
+        // const indexOfTaskToDelete = this.tasks.findIndex((task) => {
+        //     return task.title === title
+        // });
+        // const taskToDelete = this.tasks[indexOfTaskToDelete];
+        //
+        // this.tasks.splice(indexOfTaskToDelete, 1);
+        this.tasks = this.tasks.filter((task) => {
+            return task.title !== title;
         });
-        const taskToDelete = this.tasks[indexOfTaskToDelete];
-
-        this.tasks.splice(indexOfTaskToDelete, 1);
         localStorage.setItem(this.key, JSON.stringify(this.tasks));
-
-        return taskToDelete;
     }
 }
