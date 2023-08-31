@@ -4,32 +4,32 @@ export class TaskLocalStorage {
     key: string;
     tasks: Set<Task>;
 
-    constructor(keyToAccess?: string, items?: Set<Task>) {
+    constructor(keyToAccess?: string) {
         this.key = keyToAccess ?? 'tasks';
-        this.tasks = items ?? this.parseLocalStorage();
+        this.tasks = this.parse();
     }
 
-    private parseLocalStorage(): Set<Task> {
+    private parse(): Set<Task> {
         const existingTasks = localStorage.getItem(this.key);
         if (!existingTasks)
             return new Set<Task>();
         return new Set<Task>(JSON.parse(existingTasks));
     }
 
-    push(task: Task): void {
+    addTask(task: Task): void {
         this.tasks.add(task);
-        this.updateLocalStorage();
+        this.update();
     }
 
-    deleteTaskByTitle(title: string): void {
+    deleteTask(title: string): void {
         this.tasks.forEach((task) => {
             if (task.title === title)
                 this.tasks.delete(task);
         });
-        this.updateLocalStorage();
+        this.update();
     }
 
-    private updateLocalStorage(): void {
+    private update(): void {
         const value = JSON.stringify([...this.tasks]);
         localStorage.setItem(this.key, value);
     }

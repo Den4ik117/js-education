@@ -23,9 +23,7 @@ export class TODOListView {
     private showTasks(tasks?: Set<Task>): void {
         if (!tasks)
             return;
-        tasks.forEach((task) => {
-            this.push(task);
-        })
+        tasks.forEach((task) => this.add(task));
     }
 
     private registerModalClosing(): void {
@@ -33,7 +31,6 @@ export class TODOListView {
             if (e.target === this.modalWindow)
                 this.closeModalWindow();
         });
-
         const successButton = this.modalWindow?.querySelector('#modal-close-btn');
         if (!successButton)
             return
@@ -42,13 +39,13 @@ export class TODOListView {
         });
     }
 
-    push(task: Task): void {
+    add(task: Task): void {
         const taskElem = getTaskHTMLElem(task);
         taskElem.setAttribute(`data-${this.dataAttributeName}`, task.title);
         this.root?.prepend(taskElem);
     }
 
-    remove(title: string): void {
+    deleteTask(title: string): void {
         const dataSelector = `[data-${this.dataAttributeName}="${title}"]`;
         const taskElemsToDelete = this.root?.querySelectorAll(dataSelector);
         taskElemsToDelete?.forEach((taskElem) => {

@@ -11,50 +11,70 @@ const buttonElem: HTMLButtonElement | null = document.querySelector('#button');
 class TODOList {
     tasks: Set<Task>;
 
-    constructor(public itemsView: TODOListView,
-                public localStorage: TaskLocalStorage,
-                items?: Set<Task>) {
-        this.tasks = items ?? new Set<Task>();
-        this._init();
+    constructor(public itemsView: TODOListView, public localStorage: TaskLocalStorage) {
+        this.tasks = localStorage.tasks;
+        this.init();
     }
 
-    private _init(): void {
-        this.addTaskAddingListener();
+    private init(): void {
+        this.addAddingTaskByPressingEnter(inputElem);
+        this.addAddingTaskByClickingButton(buttonElem, inputElem);
         this.addTaskDeleteListener();
     }
 
-    push(task: Task): void {
+    add(task: Task): void {
         this.tasks.add(task);
-        this.itemsView.push(task);
-        this.localStorage.push(task);
+        this.itemsView.add(task);
+        this.localStorage.addTask(task);
     }
 
     remove(title: string): void {
-        this.itemsView.remove(title);
-        this.localStorage.deleteTaskByTitle(title);
+        this.itemsView.deleteTask(title);
+        this.localStorage.deleteTask(title);
         this.tasks.forEach((task) => {
             if (task.title === title)
                 this.tasks.delete(task);
         });
     }
 
-    private addTaskAddingListener() {
-        buttonElem?.addEventListener('click', () => {
-            const title = inputElem?.value;
-            if (!title)
+    private isInputEmpty(input: HTMLInputElement): boolean {
+        return input.value === '' || input.value === null || input.value === undefined;
+    }
+
+    private isTaskAlreadyExists(task: Task): boolean {
+        let isTaskExists = false;
+        this.tasks.forEach((t) => {
+            if (t.title === task.title) {
+                isTaskExists = true;
                 return;
-            let isTaskExists = false;
-            this.tasks.forEach((task) => {
-                if (task.title === title) {
-                    alert('Такая задача уже присутствует в списке дел');
-                    isTaskExists = true;
-                    return
-                }
-            });
-            if (isTaskExists)
+            }
+        });
+        return isTaskExists;
+    }
+
+    private addAddingTaskByPressingEnter(source: HTMLInputElement | null): void {
+        if (!source)
+            return;
+        source.addEventListener('keypress', (e) => {
+            if (e.key !== 'Enter')
                 return;
-            const newTask: Task = {title: title};
-            this.push(newTask);
+            const newTask: Task = {title: source.value};
+            if (this.isInputEmpty(source) || this.isTaskAlreadyExists(newTask))
+                return;
+            this.add(newTask);
+            source.value = '';
+        });
+    }
+
+    private addAddingTaskByClickingButton(button: HTMLButtonElement | null,
+                                          source: HTMLInputElement | null): void {
+        if (!button || !source)
+            return
+        button.addEventListener('click', () => {
+            const newTask: Task = {title: source.value};
+            if (this.isInputEmpty(source) || this.isTaskAlreadyExists(newTask))
+                return;
+            this.add(newTask);
         })
     }
 
