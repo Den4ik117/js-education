@@ -13,12 +13,12 @@ export class TaskLocalStorage {
         const existingTasks = localStorage.getItem(this.key);
         if (!existingTasks)
             return new Set<Task>();
-        return JSON.parse(existingTasks);
+        return new Set<Task>(JSON.parse(existingTasks));
     }
 
     push(task: Task): void {
         this.tasks.add(task);
-        localStorage.setItem(this.key, JSON.stringify(this.tasks));
+        this.updateLocalStorage();
     }
 
     deleteTaskByTitle(title: string): void {
@@ -26,6 +26,10 @@ export class TaskLocalStorage {
             if (task.title === title)
                 this.tasks.delete(task);
         });
+        this.updateLocalStorage();
+    }
+
+    private updateLocalStorage(): void {
         localStorage.setItem(this.key, JSON.stringify(this.tasks));
     }
 }
