@@ -30,6 +30,7 @@ export class TaskLocalStorage {
     }
 
     private updateLocalStorage(): void {
-        localStorage.setItem(this.key, JSON.stringify(this.tasks));
+        const value = JSON.stringify([...this.tasks]);
+        localStorage.setItem(this.key, value);
     }
 }
