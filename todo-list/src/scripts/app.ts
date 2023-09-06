@@ -38,7 +38,7 @@ class TODOList {
     }
 
     private isInputEmpty(input: HTMLInputElement): boolean {
-        return input.value === '' || input.value === null || input.value === undefined;
+        return !input.value;
     }
 
     private isTaskAlreadyExists(task: Task): boolean {
