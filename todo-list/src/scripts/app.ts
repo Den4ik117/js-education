@@ -1,6 +1,6 @@
-import {Task} from './task.ts';
-import {TODOListView} from './view.ts';
-import {TaskLocalStorage} from './storage.ts';
+import {Task} from './task';
+import {TODOListView} from './view';
+import {TaskLocalStorage} from './storage';
 
 const inputElem: HTMLInputElement | null = document.querySelector('#input');
 const tasksElem: HTMLUListElement | null = document.querySelector('#tasks');
