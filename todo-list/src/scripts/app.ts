@@ -42,14 +42,8 @@ class TODOList {
     }
 
     private isTaskAlreadyExists(task: Task): boolean {
-        let isTaskExists = false;
-        this.tasks.forEach((t) => {
-            if (t.title === task.title) {
-                isTaskExists = true;
-                return;
-            }
-        });
-        return isTaskExists;
+        return [...this.tasks]
+            .some(t => t.title === task.title);
     }
 
     private addAddingTaskByPressingEnter(source: HTMLInputElement | null): void {
