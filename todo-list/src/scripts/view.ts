@@ -1,4 +1,4 @@
-import {getTaskHTMLElem, Task} from './markup.ts';
+import {getTaskHTMLElem, Task} from './markup';
 
 export class TODOListView {
     root: HTMLUListElement | null;
