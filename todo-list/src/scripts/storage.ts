@@ -1,4 +1,4 @@
-import {Task} from './task';
+import {Task} from './markup.ts';
 
 export class TaskLocalStorage {
     key: string;

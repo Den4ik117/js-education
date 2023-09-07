@@ -1,4 +1,4 @@
-import {Task} from './task';
+import {Task} from './markup.ts';
 import {TODOListView} from './view';
 import {TaskLocalStorage} from './storage';
 
